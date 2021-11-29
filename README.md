@@ -1,3 +1,22 @@
+Video link: https://youtu.be/eqeQKesfQDI
+
+References:
+Getting the Hadoop clusters up and running
+https://dev.to/boyu1997/run-python-mapreduce-on-local-docker-hadoop-cluster-1g46
+https://gist.github.com/BalaDipu/6d741437dbb47cfc25ffb04e24101b40
+
+Inverted index and word count troubleshooting
+https://stackoverflow.com/questions/28909145/os-environmapreduce-map-input-file-doesnt-work
+https://stackoverflow.com/questions/20583211/top-n-values-by-hadoop-map-reduce-code
+https://www.ranks.nl/stopwords
+https://www.kite.com/python/answers/how-to-check-if-a-string-is-in-a-list-of-strings,-ignoring-case,-in-python
+
+Application troubleshooting
+https://stackoverflow.com/questions/31578446/running-a-script-inside-a-docker-container-using-shell-script
+https://www.youtube.com/watch?v=2Fp1N6dof0Y
+https://ryanstutorials.net/bash-scripting-tutorial/bash-input.php
+https://stackoverflow.com/questions/18048728/python-write-to-a-file-returns-empty-file
+
 -how to run this application-
 
 First the user should open a terminal of their choice and navigate to the folder that they downloaded. The terminal should have git installed to be able to clone my repository.

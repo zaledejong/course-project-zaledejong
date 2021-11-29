@@ -1,0 +1,67 @@
+git clone https://github.com/big-data-europe/docker-hadoop.git
+cd /docker-hadoop
+docker-compose up -d
+
+References:
+Getting the Hadoop clusters up and running
+https://dev.to/boyu1997/run-python-mapreduce-on-local-docker-hadoop-cluster-1g46
+https://gist.github.com/BalaDipu/6d741437dbb47cfc25ffb04e24101b40
+
+Inverted index and word count troubleshooting
+https://stackoverflow.com/questions/28909145/os-environmapreduce-map-input-file-doesnt-work
+https://stackoverflow.com/questions/20583211/top-n-values-by-hadoop-map-reduce-code
+https://www.ranks.nl/stopwords
+https://www.kite.com/python/answers/how-to-check-if-a-string-is-in-a-list-of-strings,-ignoring-case,-in-python
+
+Application troubleshooting
+https://stackoverflow.com/questions/31578446/running-a-script-inside-a-docker-container-using-shell-script
+https://www.youtube.com/watch?v=2Fp1N6dof0Y
+https://ryanstutorials.net/bash-scripting-tutorial/bash-input.php
+https://stackoverflow.com/questions/18048728/python-write-to-a-file-returns-empty-file
+
+docker exec -it datanode bash
+docker exec -it nodemanager bash
+docker exec -it namenode bash
+apt update -qq -y && apt upgrade -qq -y && apt install -qq -y python
+
+might need to install python in these containers as well
+docker exec -it historyserver bash
+docker exec -it resourcemanager bash
+
+docker cp wordcount_mapper.py namenode:/wordcount_mapper.py
+docker cp wordcount_reducer.py namenode:/wordcount_reducer.py
+docker cp invertedindex_mapper.py namenode:/invertedindex_mapper.py
+docker cp invertedindex_reducer.py namenode:/invertedindex_reducer.py
+docker cp data/ namenode:/input
+
+docker exec -it namenode bash
+hadoop fs -mkdir -p tmp
+hadoop fs -put input
+
+might need to use this instead of mapred streaming \
+find / -name 'hadoop-streaming*.jar'
+hadoop jar /opt/hadoop-3.2.1/share/hadoop/tools/lib/hadoop-streaming-3.2.1.jar \
+
+mapred streaming \
+-file wordcount_mapper.py -mapper 'python wordcount_mapper.py' \
+-file wordcount_reducer.py -reducer 'python wordcount_reducer.py' \
+-input input/* \
+-output wordcount_output
+
+mapred streaming \
+-file invertedindex_mapper.py -mapper 'python invertedindex_mapper.py' \
+-file invertedindex_reducer.py -reducer 'python invertedindex_reducer.py' \
+-input input/* \
+-output invertedindex_output
+
+
+if you need to delete output folder,
+hadoop fs -ls
+hadoop fs -rm -r wordcount_output
+hadoop fs -rm -r invertedindex_output
+
+hadoop fs -getmerge wordcount_output wordcount-output
+hadoop fs -getmerge invertedindex_output invertedindex-output
+
+cat wordcount-output | sort -n -k2 -r | head -n20
+grep -a -w zone invertedindex-output
